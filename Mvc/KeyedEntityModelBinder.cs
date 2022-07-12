@@ -37,7 +37,7 @@ namespace Grammophone.Domos.Web.Mvc
 		{
 			UpdateEntitiesCollectionMethod =
 				typeof(KeyedEntityModelBinder<K>)
-				.GetMethod("UpdateEntitiesCollectionImpl", BindingFlags.Static | BindingFlags.NonPublic);
+				.GetMethod(nameof(UpdateEntitiesCollectionImpl), BindingFlags.Static | BindingFlags.NonPublic);
 
 			EntityCollectionInterfacesByType = new ConcurrentDictionary<Type, Type>();
 		}
@@ -243,6 +243,20 @@ namespace Grammophone.Domos.Web.Mvc
 			if (originalCollection == null) throw new ArgumentNullException(nameof(originalCollection));
 
 			if (changedCollection == null) return;
+
+			var changedIDs = new HashSet<K>();
+
+			foreach (E element in changedCollection)
+			{
+				changedIDs.Add(element.ID);
+			}
+
+			var removedElements = originalCollection.Where(element => !changedIDs.Contains(element.ID)).ToArray();
+
+			foreach (E element in removedElements)
+			{
+				originalCollection.Remove(element);
+			}
 
 			var originalIDs = new HashSet<K>();
 
