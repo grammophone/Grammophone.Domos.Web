@@ -137,7 +137,7 @@ namespace Grammophone.Domos.Web.Mvc
 		{
 			if (component is Models.ActionExecutionModel statePathExecutionModel)
 			{
-				if (value == null && this.ParameterSpecification.Type.IsValueType
+				if (value == null && this.ParameterSpecification.Type.IsValueType && Nullable.GetUnderlyingType(this.ParameterSpecification.Type) ==  null
 					|| value != null && !this.ParameterSpecification.Type.IsAssignableFrom(value.GetType()))
 				{
 					throw new ArgumentException("The value is not compatible to the parameter.", nameof(value));
