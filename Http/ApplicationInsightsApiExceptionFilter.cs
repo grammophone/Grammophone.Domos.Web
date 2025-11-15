@@ -23,39 +23,7 @@ namespace Grammophone.Domos.Web.Http
 		{
 			var exception = actionExecutedContext.Exception;
 
-			switch (exception)
-			{
-				case ActionException actionException:
-					var actionTelemetry = new Microsoft.ApplicationInsights.TelemetryClient();
-
-					actionTelemetry.TrackTrace(actionException.Message, Microsoft.ApplicationInsights.DataContracts.SeverityLevel.Warning);
-
-					break;
-
-				//case AccessDeniedException accessDeniedException:
-				case IntegrityViolationException integrityConstraintExceptinon:
-					var integrityConstraintMessageTelemetry = new Microsoft.ApplicationInsights.TelemetryClient();
-
-					integrityConstraintMessageTelemetry.TrackTrace(integrityConstraintExceptinon.Message, Microsoft.ApplicationInsights.DataContracts.SeverityLevel.Information);
-					break;
-
-				case UserException userException:
-					var userMessageTelemetry = new Microsoft.ApplicationInsights.TelemetryClient();
-
-					userMessageTelemetry.TrackTrace(userException.Message, Microsoft.ApplicationInsights.DataContracts.SeverityLevel.Information);
-					//case InvalidOperationException invalidOperationException:
-					// These exceptions are intended to communicate errors to the user,
-					// thus do not record them as system errors.
-					break;
-
-
-				default:
-					var telemetry = new Microsoft.ApplicationInsights.TelemetryClient();
-
-					telemetry.TrackException(exception);
-
-					break;
-			}
+			ApplicationInsightsLogging.LogException(exception);
 		}
 	}
 }
