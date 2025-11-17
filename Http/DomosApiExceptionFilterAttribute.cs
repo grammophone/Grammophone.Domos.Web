@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http.Filters;
 using Grammophone.DataAccess;
 using Grammophone.Domos.Logic;
@@ -26,43 +27,16 @@ namespace Grammophone.Domos.Web.Http
 		{
 			var exception = actionExecutedContext.Exception;
 
-			if (exception is AccessDeniedException
-				|| exception is IntegrityViolationException)
+			var userErrorModelResponse = UserErrorParser.TryParseException(exception);
+
+			if (userErrorModelResponse != null)
 			{
-				var statusCode = HttpStatusCode.InternalServerError;
-
-				string userMessage = ErrorMessages.GENERIC_ERROR;
-
-				if (exception is AccessDeniedException)
-				{
-					statusCode = HttpStatusCode.Forbidden;
-					userMessage = ErrorMessages.ACCESS_DENIED;
-				}
-				else if (exception is UniqueConstraintViolationException)
-				{
-					statusCode = HttpStatusCode.Conflict;
-					userMessage = ErrorMessages.UNIQUENESS_CONSTRAINT_VIOLATION;
-				}
-				else if (exception is ReferentialConstraintViolationException)
-				{
-					statusCode = HttpStatusCode.Conflict;
-					userMessage = ErrorMessages.RELATIONAL_CONSTRAINT_VIOLATION;
-				}
+				if (HttpContext.Current?.Items != null) HttpContext.Current.Items[UserErrorModelResponse.Key] = userErrorModelResponse;
 
 				actionExecutedContext.Response =
 					actionExecutedContext.Request.CreateResponse(
-					statusCode,
-					new UserErrorModel(userMessage));
-
-				return;
-			}
-
-			if (exception is UserException userException)
-			{
-				actionExecutedContext.Response =
-					actionExecutedContext.Request.CreateResponse(
-					HttpStatusCode.InternalServerError,
-					new UserErrorModel(userException));
+					userErrorModelResponse.HttpStatusCode,
+					userErrorModelResponse.UserErrorModel);
 
 				return;
 			}
@@ -71,6 +45,5 @@ namespace Grammophone.Domos.Web.Http
 				base.OnException(actionExecutedContext);
 			}
 		}
-
 	}
 }

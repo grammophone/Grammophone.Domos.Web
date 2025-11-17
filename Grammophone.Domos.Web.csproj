@@ -6,6 +6,7 @@
     <Product>Grammophone.Domos.Web</Product>
     <Copyright>Copyright ©  2016</Copyright>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
