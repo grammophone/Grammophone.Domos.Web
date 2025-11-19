@@ -18,6 +18,7 @@ namespace Grammophone.Domos.Web.Http
 	/// <see cref="AccessDeniedException"/> and <see cref="IntegrityViolationException"/>
 	/// descendants to serve meaningful responses.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	public class DomosApiExceptionFilterAttribute : ExceptionFilterAttribute
 	{
 		/// <summary>

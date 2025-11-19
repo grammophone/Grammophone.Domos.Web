@@ -14,7 +14,8 @@ namespace Grammophone.Domos.Web.Http
 	/// Web API Filter attribute to record system exceptions to Applications Insights,
 	/// excluding exceptions targeted to the user.
 	/// </summary>
-	public class ApplicationInsightsApiExceptionFilter : ExceptionFilterAttribute
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+	public class ApplicationInsightsApiExceptionFilterAttribute : ExceptionFilterAttribute
 	{
 		/// <summary>
 		/// Records the system exceptions and does nothing for the rest.

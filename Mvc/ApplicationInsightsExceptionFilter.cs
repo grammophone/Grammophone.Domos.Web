@@ -13,6 +13,7 @@ namespace Grammophone.Domos.Web.Mvc
 	/// MVC Filter attribute to record system exceptions to Applications Insights,
 	/// excluding exceptions targeted to the user.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	public class ApplicationInsightsExceptionFilter : FilterAttribute, IExceptionFilter
 	{
 		/// <summary>
