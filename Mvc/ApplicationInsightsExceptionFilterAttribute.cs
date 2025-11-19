@@ -14,7 +14,7 @@ namespace Grammophone.Domos.Web.Mvc
 	/// excluding exceptions targeted to the user.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-	public class ApplicationInsightsExceptionFilter : FilterAttribute, IExceptionFilter
+	public class ApplicationInsightsExceptionFilterAttribute : FilterAttribute, IExceptionFilter
 	{
 		/// <summary>
 		/// Records the system exceptions and does nothing for the rest.
